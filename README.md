@@ -29,7 +29,7 @@ module.exports = {
     return require.resolve("react-native-typed-sass-transformer");
   },
   getSourceExts() {
-    return ["js", "jsx", "scss", "sass"];
+    return ["ts", "tsx", "scss", "sass"];
   }
 };
 ```
@@ -40,7 +40,7 @@ module.exports = {
 {
   "expo": {
     "packagerOpts": {
-      "sourceExts": ["js", "jsx", "scss", "sass"],
+      "sourceExts": ["ts", "tsx", "scss", "sass"],
       "transformer": "node_modules/react-native-typed-sass-transformer/index.js"
     }
   }
