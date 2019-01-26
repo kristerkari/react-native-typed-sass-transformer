@@ -22,7 +22,7 @@ yarn add --dev react-native-typed-sass-transformer node-sass
 
 ### Step 2: Configure the react native packager
 
-### For React Native v0.57 or newer / Expo SDK v31.0.0 or newer
+#### For React Native v0.57 or newer / Expo SDK v31.0.0 or newer
 
 Add this to `rn-cli.config.js` in your project's root (create the file if it does not exist already):
 
