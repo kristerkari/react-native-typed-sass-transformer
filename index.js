@@ -36,6 +36,24 @@ function isPlatformSpecific(filename) {
   return platformSpecific.some(name => filename.includes(name));
 }
 
+function renderToCSS({ src, filename, options }) {
+  var result = sass.renderSync({
+    data: src,
+    includePaths: [path.dirname(filename), appRoot],
+    indentedSyntax: filename.endsWith(".sass")
+  });
+  var css = result.css.toString();
+  return css;
+}
+
+function renderToCSSPromise({ src, filename, options }) {
+  return Promise.resolve(renderToCSS({ src, filename, options }));
+}
+
+function renderCSSToReactNative(css) {
+  return css2rn(css, { parseMediaQueries: true });
+}
+
 module.exports.transform = function(src, filename, options) {
   if (typeof src === "object") {
     // handle RN >= 0.46
@@ -43,13 +61,8 @@ module.exports.transform = function(src, filename, options) {
   }
 
   if (filename.endsWith(".scss") || filename.endsWith(".sass")) {
-    var result = sass.renderSync({
-      data: src,
-      includePaths: [path.dirname(filename), appRoot],
-      indentedSyntax: filename.endsWith(".sass")
-    });
-    var css = result.css.toString();
-    var cssObject = css2rn(css, { parseMediaQueries: true });
+    var css = renderToCSS({ src, filename, options });
+    var cssObject = renderCSSToReactNative(css);
 
     if (isPlatformSpecific(filename)) {
       return upstreamTransformer.transform({
@@ -70,3 +83,5 @@ module.exports.transform = function(src, filename, options) {
   }
   return upstreamTransformer.transform({ src, filename, options });
 };
+
+module.exports.renderToCSS = renderToCSSPromise;
