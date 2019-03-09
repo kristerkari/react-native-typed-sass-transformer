@@ -37,11 +37,16 @@ function isPlatformSpecific(filename) {
 }
 
 function renderToCSS({ src, filename, options }) {
-  var result = sass.renderSync({
-    data: src,
+  var defaultOpts = {
     includePaths: [path.dirname(filename), appRoot],
     indentedSyntax: filename.endsWith(".sass")
-  });
+  };
+
+  var opts = options.sassOptions
+    ? Object.assign(defaultOpts, options.sassOptions, { data: src })
+    : Object.assign(defaultOpts, { data: src });
+
+  var result = sass.renderSync(opts);
   var css = result.css.toString();
   return css;
 }
