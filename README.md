@@ -52,7 +52,8 @@ If you are using [Expo](https://expo.io/), you also need to add this to `app.jso
 {
   "expo": {
     "packagerOpts": {
-      "config": "metro.config.js"
+      "config": "metro.config.js",
+      "sourceExts": ["ts", "tsx", "scss", "sass"]
     }
   }
 }
