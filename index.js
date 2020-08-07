@@ -124,6 +124,12 @@ module.exports.transform = function(src, filename, options) {
       });
     }
     return creator.create(filename, css).then(content => {
+
+      content.resultList = content.resultList.map(contentElement => {
+        return contentElement.replace(/string/, "StyleProp")
+      })
+      content.resultList.unshift(`import { StyleProp } from "react-native"`)
+
       return content.writeFile().then(() => {
         return upstreamTransformer.transform({
           src: "module.exports = " + JSON.stringify(cssObject),
